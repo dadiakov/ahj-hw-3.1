@@ -1,0 +1,27 @@
+.game-field {
+  border: 2px solid black;
+  border-spacing: 0;
+}
+
+.field-cell {
+  border: 1px solid black;
+  width: 100px;
+  height: 100px;
+}
+
+.image {
+  display: flex;
+  width: 90%;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.cursor {
+  cursor: auto;
+  cursor: url(9dc73e9696ed70d8d07233053fd94955.jpg), auto;
+}
+
+.hide {
+  display: none;
+}
+
