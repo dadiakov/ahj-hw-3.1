@@ -1,5 +1,4 @@
 /* eslint-disable linebreak-style */
-/* eslint-disable no-console */
 /* eslint-disable no-plusplus */
 /* eslint-disable no-shadow */
 /* eslint-disable no-use-before-define */
@@ -16,6 +15,7 @@ let startGame;
 addTable(size);
 startGame = setInterval(addPic, timeout);
 container.addEventListener('click', crashHim);
+document.querySelector('.new-game').addEventListener('click', newGame);
 
 function addTable(size) {
   const table = document.createElement('table');
@@ -36,13 +36,14 @@ function addTable(size) {
 }
 
 function addPic() {
+  Array.from(document.querySelectorAll('td')).forEach((e) => {
+    e.addEventListener('mouseenter', mouseEnterListener);
+  });
   const index = Math.floor(Math.random() * (size ** 2));
   if (!document.getElementById(index).firstChild) {
     if (document.querySelector('.image')) loseCount.textContent++;
     if (loseCount.textContent >= 5) {
-      clearInterval(startGame);
-      container.removeEventListener('click', crashHim);
-      console.log('Игра закончена');
+      endGame();
     }
     const element = document.getElementById(index);
     document.querySelectorAll('.image').forEach((elem) => elem.remove());
@@ -60,16 +61,35 @@ function crashHim(e) {
   if (e.target.classList.contains('image')) {
     container.classList.add('cursor');
     e.target.remove();
-    setTimeout(() => container.classList.remove('cursor'), 300);
     winCount.textContent++;
   }
 }
 
-document.querySelector('.new-game').addEventListener('click', () => {
+function newGame() {
   clearInterval(startGame);
   document.querySelectorAll('.image').forEach((elem) => elem.remove());
   container.addEventListener('click', crashHim);
+  document.querySelector('.end-game').classList.add('hide');
   winCount.textContent = 0;
   loseCount.textContent = 0;
   startGame = setInterval(addPic, timeout);
-});
+}
+
+function mouseEnterListener(e) {
+  if (e.target.firstElementChild
+        && e.target.firstElementChild.classList.contains('image')) {
+    container.classList.add('cursor');
+  } else {
+    container.classList.remove('cursor');
+  }
+}
+
+function endGame() {
+  clearInterval(startGame);
+  container.classList.remove('cursor');
+  document.querySelector('.end-game').classList.remove('hide');
+  container.removeEventListener('click', crashHim);
+  Array.from(document.querySelectorAll('td')).forEach((e) => {
+    e.removeEventListener('mouseenter', mouseEnterListener);
+  });
+}

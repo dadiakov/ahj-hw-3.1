@@ -20,3 +20,7 @@
   cursor: auto;
   cursor: url("../img/hummer.jpg"), auto;
 }
+
+.hide {
+  display: none;
+}
